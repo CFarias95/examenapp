@@ -1,11 +1,43 @@
 <?php
 session_start();
-if (isset($_SESSION['login_user'])){
+
 include('conexion.php');
-$id_profe=$_SESSION['id_user'];
+
+if(isset($_POST['correo']) and isset($_POST['contraseña']) and isset($_POST['contraseña1']) and isset($_POST['rol'])){
+
+    $contraseña1=$_POST['contraseña'];
+    $contraseña2=$_POST['contraseña1'];
+
+    if($contraseña1 == $contraseña2){
+        $correo=$_POST['correo'];
+        $contraseña=$_POST['contraseña'];
+        $rol=$_POST['rol'];
+
+        $sql="INSERT INTO usuarios(user,password,rol) VALUES('$correo','$contraseña','$rol');";
+        $res= mysqli_query($con,$sql);
+        if($res){
+            echo "<script>
+            alert('Usuario ingresado exitosamente');
+            header('location: nuevo.php');
+            </script>";
+        }else{
+            echo "<script>
+            alert('No se pudieron guardar los datos');
+            header('location: nuevo.php');
+            </script>";
+        }
+
+    }else{
+        echo "<script>
+        alert('Las contraseñas no conciden');
+        header('location: nuevo.php');
+        </script>";
+    }
+}
 
 //inicia el HTML
 ?>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -20,9 +52,8 @@ $id_profe=$_SESSION['id_user'];
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     
     <!------ Include the above in your HEAD tag ---------->
-    <title>Inicio</title>
+    <title>Cursos</title>
 </head>
-
 <body>    
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">Navbar</a>
@@ -38,9 +69,6 @@ $id_profe=$_SESSION['id_user'];
         <li class="nav-item active">
             <a class="nav-link" href="registrar.php">Registrar</a>
         </li>
-        <li class="nav-item active">
-            <a class="nav-link" href="salir.php">Salir</a>
-        </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Reportes
@@ -48,71 +76,42 @@ $id_profe=$_SESSION['id_user'];
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="rep_cursos.php">Cursos</a>
             <a class="dropdown-item" href="rep_materias.php">Materias</a>
-            <a class="dropdown-item" href="#">Profesor</a>
-            <a class="dropdown-item" href="#">periodo</a>
+            <a class="dropdown-item" href="rep_periodo.php">periodo</a>
             </div>
+        </li>  
+        <li class="nav-item active">
+            <a class="nav-link" href="nuevo.php">Nuevo</a>
         </li>
-        
-        </ul>
-        
+        <li class="nav-item active">
+            <a class="nav-link" href="salir.php">Salir</a>
+        </li>      
+        </ul>        
     </div>
     </nav>
-    <div class="container" >
-    <form action="guardar.php" method="POST">
-        <p>Alumno:
-        <select name="nombre">
-            <option value="0">Seleccione:</option>
-            <?php
-            $query ="select idusu,user FROM usuarios 
-                JOIN alumnos ON usuarios.idusu=alumnos.id_usu
-                JOIN cursos ON alumnos.id_curso=cursos.id_curso
-                WHERE cursos.id_profe = '$id_profe';";
-                $result=mysqli_query($con, $query);
-
-            while ($valores = mysqli_fetch_array($result)) {
-                echo '<option value="'.$valores['idusu'].'">'.$valores['user'].'</option>';
-            }
-            ?>
-        </select>
-        </p>
-        <p>Periodo:
-        <select name="periodo">
-            <option value="0">Seleccione:</option>
-            <?php
-            $query1 ="SELECT * FROM periodo;";
-            $result1=mysqli_query($con, $query1);
-
-            while ($valores1 = mysqli_fetch_array($result1)) {
-                echo '<option value="'.$valores1['id_periodo'].'">'.$valores1['descrip'].'</option>';
-            }
-            ?>
-        </select>
-        </p>
-        <p>Curso:
-                <select name="curso">
-                    <option value="0">Seleccione:</option>
-                    <?php
-                    $query2 ="SELECT id_curso,descrip FROM cursos WHERE id_profe='$id_profe';";
-                    $result2=mysqli_query($con, $query2);
-
-                    while ($valores2 = mysqli_fetch_array($result2)) {
-                        echo '<option value="'.$valores2['id_curso'].'">'.$valores2['descrip'].'</option>';
-                    }
-                    ?>
+    
+    <div class="col">
+        <form method="POST" action="nuevo.php">
+            <p>correo:
+                <input type="mail" name="correo">
+            </p>
+            <p>Contraseña:
+                <input type="password" name="contraseña">
+            </p>
+            <p>Confirme contraseña:
+                <input type="password" name="contraseña1">
+            </p>
+            <p>Rol:
+                <select name="rol">
+                    <option value="ALUMNO" >ALUMNO</option>
+                    <option value="PROFE" >PROFESOR</option>
+                    <option value="ADMIN" >ADMINISTRADOR</option>                
                 </select>
             </p>
-        <p>Nota 1 <input type="numeric" name="nota1" ></p>
-        <p>Nota 2 <input type="numeric" name="nota2" ></p>
-        <p>Nota 3 <input type="numeric" name="nota3" ></p>
-        <p>
-            <input type="submit" value="Enviar">
-            <input type="reset" value="Borrar">
-        </p>
-    </form>
-        </div>
+            <button type="submite" class="btn btn-success">Guardar</button>
+        </form>
+
+    </div>
+    
 </body>
 </html>
 <?php
-}else{
-    header('Location: ../index.html');
-}

@@ -1,4 +1,5 @@
 <?php
+session_start();
 ?>
 <html lang="en">
 
@@ -42,9 +43,24 @@
           <a class="dropdown-item" href="rep_periodo.php">periodo</a>
         </div>
       </li>
+
+      <?php
+    if($_SESSION['login_rol']=="ADMIN"){
+
+      ?>
+      <li class="nav-item active">
+            <a class="nav-link" href="nuevo.php">Nuevo</a>
+        </li>
+      <?php
+
+    }
+    
+    ?>
+
       <li class="nav-item active">
             <a class="nav-link" href="salir.php">Salir</a>
-        </li>  
+        </li>
+    
       
     </ul>
     

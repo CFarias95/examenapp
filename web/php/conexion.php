@@ -1,8 +1,8 @@
 <?php
 
-$usuario = "zI3A1dntcU";
-$contrasena = "FIrW5OPY01";  
-$servidor = "remotemysql.com";
-$basededatos = "zI3A1dntcU";
+$usuario = "carloscndres21";
+$contrasena = "carlos21";  
+$servidor = "db4free.net";
+$basededatos = "datosapp";
 
 $con = mysqli_connect( $servidor, $usuario,$contrasena,$basededatos);
