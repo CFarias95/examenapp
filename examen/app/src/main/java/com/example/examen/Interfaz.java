@@ -57,7 +57,7 @@ public class Interfaz extends AppCompatActivity {
                         tvnota3.setText(JSONResponse.getString("nota3"));
                     }else{
                         AlertDialog.Builder builder= new AlertDialog.Builder(Interfaz.this);
-                        builder.setMessage("No hay dayos").setNegativeButton("Retry",null).create().show();
+                        builder.setMessage("No hay datos").setNegativeButton("Retry",null).create().show();
                     }
                 }catch (JSONException e){
                     e.printStackTrace();
