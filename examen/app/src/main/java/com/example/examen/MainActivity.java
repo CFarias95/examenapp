@@ -65,11 +65,17 @@ public class MainActivity extends AppCompatActivity {
                             Intent intentlog = new Intent(MainActivity.this,Interfaz.class);
                             intentlog.putExtra("rol",rol);
                             intentlog.putExtra("user",user);
+                            if(rol=="PROFE"){
+                                AlertDialog.Builder builder= new AlertDialog.Builder(MainActivity.this);
+                                builder.setMessage("Usuario no Autorizado").setNegativeButton("Salir",null).create().show();
+                            }else{
+                                MainActivity.this.startActivity(intentlog);
+                            }
 
-                            MainActivity.this.startActivity(intentlog);
+
                         }else{
                             AlertDialog.Builder builder= new AlertDialog.Builder(MainActivity.this);
-                            builder.setMessage("No se pudo ingresar").setNegativeButton("Retry",null).create().show();
+                            builder.setMessage("Error en el usuario o contraseña").setNegativeButton("Retry",null).create().show();
                         }
                         }catch (JSONException e){
                             e.printStackTrace();
