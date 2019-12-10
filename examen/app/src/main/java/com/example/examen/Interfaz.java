@@ -49,16 +49,12 @@ public class Interfaz extends AppCompatActivity {
                 try {
                     JSONObject JSONResponse = new JSONObject(response);
 
-                    boolean success= JSONResponse.getBoolean("success");
-                    if(success){
-                        tvmateria.setText(JSONResponse.getString("materia"));
-                        tvnota1.setText(JSONResponse.getString("nota1"));
-                        tvnota2.setText(JSONResponse.getString("nota2"));
-                        tvnota3.setText(JSONResponse.getString("nota3"));
-                    }else{
-                        AlertDialog.Builder builder= new AlertDialog.Builder(Interfaz.this);
-                        builder.setMessage("No hay datos").setNegativeButton("Retry",null).create().show();
-                    }
+
+                    tvmateria.setText(JSONResponse.getString("materia"));
+                    tvnota1.setText(JSONResponse.getString("nota1"));
+                    tvnota2.setText(JSONResponse.getString("nota2"));
+                    tvnota3.setText(JSONResponse.getString("nota3"));
+
                 }catch (JSONException e){
                     e.printStackTrace();
                 }
